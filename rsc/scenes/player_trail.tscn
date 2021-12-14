@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://rsc/scripts/player_trail.gd" type="Script" id=1]
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.502762, 1 )
+colors = PoolColorArray( 0.176471, 0.709804, 0.894118, 1, 1, 1, 1, 1, 0, 0, 0, 1 )
+
+[node name="player_trail" type="Line2D"]
+show_behind_parent = true
+width = 30.0
+width_curve = SubResource( 2 )
+default_color = Color( 0.4, 0.501961, 1, 1 )
+gradient = SubResource( 1 )
+script = ExtResource( 1 )

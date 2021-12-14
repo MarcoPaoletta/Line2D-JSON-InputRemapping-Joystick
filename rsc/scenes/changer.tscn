@@ -1,0 +1,151 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://rsc/scripts/changer.gd" type="Script" id=1]
+[ext_resource path="res://assets/ReadexPro-VariableFont_wght.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 40
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 50
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 40
+font_data = ExtResource( 2 )
+
+[node name="changer" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -512.0
+margin_top = -300.0
+margin_right = 512.0
+margin_bottom = 300.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="container" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -215.0
+margin_top = -118.0
+margin_right = 215.0
+margin_bottom = 118.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="up_button" type="Button" parent="container"]
+margin_right = 430.0
+margin_bottom = 56.0
+rect_min_size = Vector2( 100, 50 )
+custom_fonts/font = SubResource( 1 )
+text = "KEY"
+
+[node name="down_button" type="Button" parent="container"]
+margin_top = 60.0
+margin_right = 430.0
+margin_bottom = 116.0
+rect_min_size = Vector2( 100, 50 )
+custom_fonts/font = SubResource( 1 )
+text = "KEY"
+
+[node name="left_button" type="Button" parent="container"]
+margin_top = 120.0
+margin_right = 430.0
+margin_bottom = 176.0
+rect_min_size = Vector2( 100, 50 )
+custom_fonts/font = SubResource( 1 )
+text = "KEY"
+
+[node name="right_button" type="Button" parent="container"]
+margin_top = 180.0
+margin_right = 430.0
+margin_bottom = 236.0
+rect_min_size = Vector2( 100, 50 )
+custom_fonts/font = SubResource( 1 )
+text = "KEY"
+
+[node name="panel" type="Panel" parent="."]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.690196 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="label" type="Label" parent="panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -198.5
+margin_top = -31.5
+margin_right = 198.5
+margin_bottom = 31.5
+custom_fonts/font = SubResource( 2 )
+text = "PRESS ANY KEY"
+
+[node name="reset_button" type="Button" parent="."]
+margin_left = 297.0
+margin_top = 465.0
+margin_right = 727.0
+margin_bottom = 521.0
+rect_min_size = Vector2( 100, 50 )
+custom_fonts/font = SubResource( 1 )
+text = "RESET"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="right" type="Label" parent="."]
+margin_left = 734.0
+margin_top = 370.0
+margin_right = 865.0
+margin_bottom = 420.0
+custom_fonts/font = SubResource( 3 )
+text = "RIGHT"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="left" type="Label" parent="."]
+margin_left = 731.0
+margin_top = 306.0
+margin_right = 827.0
+margin_bottom = 356.0
+custom_fonts/font = SubResource( 3 )
+text = "LEFT"
+
+[node name="down" type="Label" parent="."]
+margin_left = 729.0
+margin_top = 243.0
+margin_right = 862.0
+margin_bottom = 293.0
+custom_fonts/font = SubResource( 3 )
+text = "DOWN"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="up" type="Label" parent="."]
+margin_left = 731.0
+margin_top = 182.0
+margin_right = 786.0
+margin_bottom = 232.0
+custom_fonts/font = SubResource( 3 )
+text = "UP"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="container/up_button" to="." method="_on_up_button_pressed"]
+[connection signal="pressed" from="container/down_button" to="." method="_on_down_button_pressed"]
+[connection signal="pressed" from="container/left_button" to="." method="_on_left_button_pressed"]
+[connection signal="pressed" from="container/right_button" to="." method="_on_right_button_pressed"]
+[connection signal="pressed" from="reset_button" to="." method="_on_reset_button_pressed"]

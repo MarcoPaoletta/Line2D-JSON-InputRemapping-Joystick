@@ -9,6 +9,15 @@ var return_accel = 20
 
 var threshold = 10
 
+func _ready():
+	check_os()
+		
+func check_os():
+	if OS.get_name() == "Android":
+		get_parent().show()
+	else:
+		get_parent().queue_free()
+
 func _process(delta):
 	if ongoing_drag == -1:
 		var pos_difference = (Vector2(0, 0) - radius) - position

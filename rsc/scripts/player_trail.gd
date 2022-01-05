@@ -1,7 +1,7 @@
 extends Line2D
 
 var point
-var lenght: int = 250
+var lenght: int = 20
 
 func _ready() -> void:
 	OS.center_window()

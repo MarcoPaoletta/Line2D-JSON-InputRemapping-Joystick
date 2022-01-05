@@ -20,3 +20,5 @@
 
 [connection signal="nodes_hide" from="changer" to="player" method="_on_nodes_hide"]
 [connection signal="nodes_show" from="changer" to="player" method="_on_nodes_show"]
+
+[editable path="player/joystick_layer"]

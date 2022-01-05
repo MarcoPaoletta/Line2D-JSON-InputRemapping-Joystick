@@ -6,10 +6,10 @@ var move: bool = true # control if player can or not move
 var game: Dictionary = {
 
 	"keys": {
-		"right": 68,
-		"left": 65,
+		"up": 87,
 		"down": 83,
-		"up": 87
+		"left": 65,
+		"right": 68
 	},
 	
 	"background_color": {

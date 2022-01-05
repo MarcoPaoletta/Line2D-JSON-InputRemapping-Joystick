@@ -10,24 +10,33 @@ var velocity: int = 700
 func move(X):
 	if g.move:
 		movement = Vector2.ZERO
-		if Input.is_key_pressed(g.game["keys"]["right"]):
+		if g.game["keys"]["right"] != null and Input.is_key_pressed(g.game["keys"]["right"]):
 			movement.x += 1
-		if Input.is_key_pressed(g.game["keys"]["left"]):
+		if g.game["keys"]["left"] != null and Input.is_key_pressed(g.game["keys"]["left"]):
 			movement.x -= 1	
-		if Input.is_key_pressed(g.game["keys"]["down"]):
+		if g.game["keys"]["down"] != null and Input.is_key_pressed(g.game["keys"]["down"]):
 			movement.y += 1
-		if Input.is_key_pressed(g.game["keys"]["up"]):
+		if g.game["keys"]["up"] != null and Input.is_key_pressed(g.game["keys"]["up"]):
 			movement.y -= 1
 			
 		if movement.length() > 0:
 			movement = movement.normalized() * velocity
 			
+		if OS.get_name() == "Android":
+			move_and_slide(joystick.get_value() * velocity)
+			
 		position += movement * X
-		move_and_slide(joystick.get_value() * velocity)
 		movement.x = lerp(movement.x,0,0.2)
+
+func borders():
+	if position.x >= get_viewport().size.x or position.x <= 0:
+		center_position()
+	if position.y >= get_viewport().size.y or position.y <= 0:
+		center_position()
 
 func _process(delta: float) -> void:
 	move(delta)
+	borders()
 
 func center_position() -> void:
 	position = window / 2

@@ -7,4 +7,3 @@ func update_colors() -> void:
 
 func _ready() -> void:
 	update_colors()
-

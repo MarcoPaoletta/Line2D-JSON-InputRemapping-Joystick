@@ -8,7 +8,6 @@
 * En esta ocasion, utilizamos archivos JSON para poder guardar informacion de una manera legible para el usuario y que asi pueda modificarla. Esto es distinto a la forma de almacenar datos presentes en [Dictionaries-Save-Load](https://github.com/MarcoPaoletta/Dictionaries-Save-Load/blob/master/rsc/gamehandler/gamehandler.gd) porque aqui se almacenan de una forma ilegible
 * La ruta que se utiliza en Godot para almacenar archivos es *user://nombre_del_archivo*. En este caso es *user://data.json* y se encuentra en *C:\Users\usuario\AppData\Roaming\Godot\app_userdata\Line2D - JSON - Input Remapping - Joystick*
 * Cuando abrimos el archivo JSON, nos encontramos con un diccionario almacenado en el. Toda la logica de guardado y cargado de datos se encuentra presente en [global.gd](https://github.com/MarcoPaoletta/Line2D-JSON-InputRemapping-Joystick/blob/master/rsc/global/global.gd)
-<img src = https://github.com/MarcoPaoletta/Line2D-JSON-InputRemapping-Joystick/blob/master/JSON.png>
 
 ---
 

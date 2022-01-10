@@ -9,21 +9,35 @@ var show_panel: bool = false # show or not panel deppending on buttons
 
 var button: Node # control which button is pressed
 
-var scancode  # store the scancode of the event
+var scancode # store the scancode of the event
 
-var not_assigned: String = "NOT ASSIGNED"
+var not_assigned: String = "NOT ASSIGNED" # text for the buttons when they do not have a key assigned
 
-func _process(_delta: float) -> void:
+var default_keys: Dictionary = { # default keys scancodes to set when they are reseted
+	"up": 87,
+	"down": 83,
+	"left": 65,
+	"right": 68
+}
+
+func _process(_delta: float) :
 	self_visibility()
 	panel_visibility()
+	
 	check_buttons_pressed()
-	update_buttons_text("right")
-	update_buttons_text("left")
-	update_buttons_text("down")
+	set_button_pressed()
+	reset_buttons_pressed()
+	delete_buttons_pressed()
+	
 	update_buttons_text("up")
+	update_buttons_text("down")
+	update_buttons_text("left")
+	update_buttons_text("right")
+	
 	g.save_data()
-
-func self_visibility() -> void:
+	
+# visibility
+func self_visibility():
 	if Input.is_action_just_pressed("tab"):
 		show = !show 
 	if show: 
@@ -35,92 +49,76 @@ func self_visibility() -> void:
 		g.move = true
 		emit_signal("nodes_show") 
 
-func panel_visibility() -> void:
+func panel_visibility():
 	if show_panel: 
 		$panel.show()
 	else:
 		$panel.hide()
-
+			
 # input remapping
-func check_buttons_pressed() -> void:
-	for i in range($container.get_child_count()):
-		var buttons = $container.get_child(i)
-		if buttons.pressed == true:
-			show_panel = true
-
-func _input(event: InputEvent) -> void:
+func _input(event):
 	if show_panel and event is InputEventKey: 
+		show_panel = false
+		
 		if event.scancode == OS.find_scancode_from_string(button.text): # pressing the same key
 			scancode = event.scancode
-			
+
 		elif event.scancode in g.game["keys"].values(): # the key is already registered
-			button.text = not_assigned
-			scancode = null
-			
-		elif not event.scancode in g.game["keys"].values(): # key remapped
-			button.text = OS.get_scancode_string(event.scancode)
 			scancode = event.scancode
-			
+			for i in $container.get_child_count():
+				var buttons: Node = $container.get_child(i)
+				if buttons.text == OS.get_scancode_string(event.scancode):
+					buttons.text = not_assigned
+					g.game["keys"][buttons.name] = null
+					
+		elif not event.scancode in g.game["keys"].values(): # key remapped
+			scancode = event.scancode
+
 		set_key("right")
 		set_key("left")
 		set_key("down")
 		set_key("up")
-		show_panel = false
 		
-func set_key(direction) -> void:
-	if button == get_node("container/" + direction + "_button"):
+func set_key(direction):
+	if button == get_node("container/" + direction):
 		g.game["keys"][direction] = scancode
 
-# buttons pressed: signals and funcs
+# buttons pressed
+func check_buttons_pressed():
+	for node in $container.get_children():
+		if node.pressed == true:
+			show_panel = true
+
 func update_buttons_text(direction):
 	if g.game["keys"][direction] != null:
-		get_node("container/" + direction + "_button").text = OS.get_scancode_string(g.game["keys"][direction])
+		get_node("container/" + direction).text = OS.get_scancode_string(g.game["keys"][direction])
 	else:
-		get_node("container/" + direction + "_button").text = not_assigned
+		get_node("container/" + direction).text = not_assigned
 
-func _on_right_button_pressed() -> void:
-	button = $container/right_button
+func set_button_pressed():
+	for node in get_tree().get_nodes_in_group("key_remap"):
+		if node.pressed == true:
+			button = node
 
-func _on_left_button_pressed() -> void:
-	button = $container/left_button
+func _on_reset_all_button_pressed():
+	reset_key("up")
+	reset_key("down")
+	reset_key("left")
+	reset_key("right")
 
-func _on_down_button_pressed() -> void:
-	button = $container/down_button
+func reset_key(direction):
+	g.game["keys"][direction] = default_keys[direction]
 
-func _on_up_button_pressed() -> void:
-	button = $container/up_button
-
-func _on_reset_button_pressed() -> void:
-	g.game["keys"]["right"] = 68
-	g.game["keys"]["left"] = 65
-	g.game["keys"]["down"] = 83
-	g.game["keys"]["up"] = 87
-
-func _on_reset_up_pressed():
-	g.game["keys"]["up"] = 87
-
-func _on_reset_down_pressed():
-	g.game["keys"]["down"] = 83
-	
-func _on_reset_left_pressed():
-	g.game["keys"]["left"] = 65
-
-func _on_reset_right_pressed():
-	g.game["keys"]["right"] = 68
-
-func delete_key(direction):
-	button = get_node("container/" + direction + "_button")
-	button.text = not_assigned
-	g.game["keys"][direction] = null
-
-func _on_delete_up_pressed():
-	delete_key("up")
-
-func _on_delete_down_pressed():
-	delete_key("down")
-
-func _on_delete_left_pressed():
-	delete_key("left")
-	
-func _on_delete_right_pressed():
-	delete_key("right")
+func reset_buttons_pressed():
+	for node in get_tree().get_nodes_in_group("reset"):
+		if node.pressed == true:
+			g.game["keys"][node.name.replace("reset_", "")] = default_keys[node.name.replace("reset_", "")]
+			for key in get_tree().get_nodes_in_group("key_remap"):
+				if OS.find_scancode_from_string(key.text) in g.game["keys"].values():
+					key.text = not_assigned
+					g.game["keys"][key.name] = default_keys[key.name]
+			
+func delete_buttons_pressed():
+	for node in get_tree().get_nodes_in_group("delete"):
+		if node.pressed == true:
+			g.game["keys"][node.name.replace("delete_", "")] = null

@@ -34,22 +34,22 @@ func borders():
 	if position.y >= get_viewport().size.y or position.y <= 0:
 		center_position()
 
-func _process(delta: float) -> void:
+func _process(delta: float) :
 	move(delta)
 	borders()
 
-func center_position() -> void:
+func center_position() :
 	position = window / 2
 
-func _ready() -> void:
+func _ready() :
 	center_position()
 
 func get_group_and_change_visibility(boolean):
 	for nodes in get_tree().get_nodes_in_group("to_hide"):
 		nodes.visible = boolean
 
-func _on_nodes_hide() -> void:
+func _on_nodes_hide() :
 	get_group_and_change_visibility(false)
 
-func _on_nodes_show() -> void:
+func _on_nodes_show() :
 	get_group_and_change_visibility(true)

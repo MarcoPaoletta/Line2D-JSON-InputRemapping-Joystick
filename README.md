@@ -18,26 +18,30 @@
 
 ---
 # Sistema de input remapping
-* Script [changer.gd](https://github.com/MarcoPaoletta/Line2D-JSON-InputRemapping-Joystick/blob/master/rsc/scripts/changer.gd)
+* Script [changer.gd](https://github.com/MarcoPaoletta/Line2D-JSON-InputRemapping-Joystick/blob/master/rsc/scripts/changer.gd) en el que se da el input remapping
 ```gdscript
-func _input(event: InputEvent) -> void:
+func _input(event):
 	if show_panel and event is InputEventKey: 
+		show_panel = false
+		
 		if event.scancode == OS.find_scancode_from_string(button.text): # pressing the same key
 			scancode = event.scancode
-			
+
 		elif event.scancode in g.game["keys"].values(): # the key is already registered
-			button.text = not_assigned
-			scancode = null
-			
-		elif not event.scancode in g.game["keys"].values(): # key remapped
-			button.text = OS.get_scancode_string(event.scancode)
 			scancode = event.scancode
-			
+			for i in $container.get_child_count():
+				var buttons: Node = $container.get_child(i)
+				if buttons.text == OS.get_scancode_string(event.scancode):
+					buttons.text = not_assigned
+					g.game["keys"][buttons.name] = null
+					
+		elif not event.scancode in g.game["keys"].values(): # key remapped
+			scancode = event.scancode
+
 		set_key("right")
 		set_key("left")
 		set_key("down")
 		set_key("up")
-		show_panel = false
 
 func set_key(direction) -> void:
 	if button == get_node("container/" + direction + "_button"):
@@ -48,16 +52,18 @@ func set_key(direction) -> void:
 * **scancode**: va a almacenar o bien el scancode del evento (*event.scancode*) o bien *null*
 * **button**: identifica que boton del panel se esta tocando. Este puede ser el boton *up*, *down*, *left* o *right*
 * **not_assigned**: *string* para los botones en cierta situacion
+* **default_keys**: *diccionario* en el que se guardan los *scancodes* por defecto
 
 ---
 
 ### Explicacion del codigo
-#### **func _input(event: InputEvent) -> void:**
-* Si el panel esta siendo mostrado y se presiona cualquier tecla pueden haber distintos resultados:
-    * Si el scancode del evento es igual al texto del boton, significa que estamos presionando la misma tecla del boton. Por ende, el scancode va a ser el scancode del evento
-    * Por otro lado, si el scancode del evento ya esta registrado en el diccionario de las keys, cambiamos el texto del boton y establecemos el scancode en null porque no queremos cambiar ningun input
-    * Como ultimo caso, si el scancode del evento no esta registrado en el diccionario de las keys, cambiamos el texto del boton dependiendo del scancode del evento y establecemos que el scancode es el scancode del evento
-* Al final de todo, llamammos a *set_key()* con cada direccion posible y ocultamos el panel
+#### **func _input(event):**
+* **Ocultamos el panel** primero que todo
+* Si el **panel esta siendo mostrado** y se **presiona cualquier tecla** pueden haber distintos resultados:
+    * Si el **scancode del evento es igual al scancode que tiene texto del boton**, usando [*OS.find_scancode_from_string*](https://docs.godotengine.org/es/stable/classes/class_os.html#class-os-method-find-scancode-from-string), significa que estamos presionando la misma tecla del boton. Por ende, el **scancode va a ser el scancode del evento**, sin hacer cambio alguno en este caso
+    * Por otro lado, si el **scancode del evento ya esta registrado en los valores del diccionario de las keys**, **establecemos nuevamente el scancode**. Luego, **obtenemos los nodos de los botones** por los cuales cambiamos las teclas y **comprobamos si el texto de alguno de los botones es el mismo al string del scancode**, usando [*OS.get_scancode_string*](https://docs.godotengine.org/es/stable/classes/class_os.html#class-os-method-get-scancode-string). Si es asi, **cambiamos el texto del boton que tiene duplicada la tecla** a que no hay asignado nada y **usando el nombre del nodo obtenido** con el metodo [name](https://docs.godotengine.org/es/stable/classes/class_node.html#class-node-property-name), **establecemos la tecla del diccionario que esta duplicada a null**
+    * Como ultimo caso, **si el scancode del evento no esta registrado en el diccionario de las keys**, **establecemos el scancode**
+* Al final de todo, llamamos a *set_key()* con cada direccion posible y ocultamos el panel
 
 #### **func set_key(direction) -> void:**
 * Cuando se llama a esta funcion con la direccion afectada, comprobara si se toco el boton de la direccion correcta y va a guardar el scancode en el diccionario keys y en la direccion correcta
@@ -84,3 +90,5 @@ func set_key(direction) -> void:
 * Abrimos Godot Engine y en la parte de la derecha buscamos el boton **Import** o **Importar**
 * Escribimos la ruta del proyecto o buscamos manualmente en la carpeta del proyecto el archivo project.godot 
 * Nos abrira el projecto y podremos ejecutarlo desde ahi tocando **F5** o en la parte superior derecha con el boton de play
+
+

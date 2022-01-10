@@ -44,5 +44,6 @@ func save_data():
 	file.store_line(JSON.print(game, "\t"))
 	file.close()
 	
-func _ready() -> void:
+func _ready() :
 	load_data()
+	OS.window_maximized = true

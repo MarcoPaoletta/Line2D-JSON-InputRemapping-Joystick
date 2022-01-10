@@ -9,12 +9,12 @@
 size = 40
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=2]
-size = 50
-font_data = ExtResource( 2 )
-
 [sub_resource type="DynamicFont" id=3]
 size = 40
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 50
 font_data = ExtResource( 2 )
 
 [node name="changer" type="Control"]
@@ -44,14 +44,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="up_button" type="Button" parent="container"]
+[node name="up" type="Button" parent="container" groups=["key_remap"]]
 margin_right = 430.0
 margin_bottom = 56.0
 rect_min_size = Vector2( 100, 50 )
 custom_fonts/font = SubResource( 1 )
 text = "KEY"
 
-[node name="down_button" type="Button" parent="container"]
+[node name="down" type="Button" parent="container" groups=["key_remap"]]
 margin_top = 60.0
 margin_right = 430.0
 margin_bottom = 116.0
@@ -59,7 +59,7 @@ rect_min_size = Vector2( 100, 50 )
 custom_fonts/font = SubResource( 1 )
 text = "KEY"
 
-[node name="left_button" type="Button" parent="container"]
+[node name="left" type="Button" parent="container" groups=["key_remap"]]
 margin_top = 120.0
 margin_right = 430.0
 margin_bottom = 176.0
@@ -67,7 +67,7 @@ rect_min_size = Vector2( 100, 50 )
 custom_fonts/font = SubResource( 1 )
 text = "KEY"
 
-[node name="right_button" type="Button" parent="container"]
+[node name="right" type="Button" parent="container" groups=["key_remap"]]
 margin_top = 180.0
 margin_right = 430.0
 margin_bottom = 236.0
@@ -75,32 +75,14 @@ rect_min_size = Vector2( 100, 50 )
 custom_fonts/font = SubResource( 1 )
 text = "KEY"
 
-[node name="panel" type="Panel" parent="."]
-visible = false
-self_modulate = Color( 1, 1, 1, 0.690196 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="label" type="Label" parent="panel"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -198.5
-margin_top = -31.5
-margin_right = 198.5
-margin_bottom = 31.5
-custom_fonts/font = SubResource( 2 )
-text = "PRESS ANY KEY"
-
-[node name="reset_button" type="Button" parent="." groups=["reset"]]
+[node name="reset_all_button" type="Button" parent="."]
 margin_left = 297.0
 margin_top = 465.0
 margin_right = 727.0
 margin_bottom = 521.0
 rect_min_size = Vector2( 100, 50 )
 custom_fonts/font = SubResource( 1 )
-text = "RESET"
+text = "RESET ALL"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -181,7 +163,7 @@ margin_bottom = 420.0
 texture_normal = ExtResource( 3 )
 expand = true
 
-[node name="delete_up" type="TextureButton" parent="."]
+[node name="delete_up" type="TextureButton" parent="." groups=["delete"]]
 margin_left = 841.0
 margin_top = 183.0
 margin_right = 941.0
@@ -192,7 +174,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="delete_down" type="TextureButton" parent="."]
+[node name="delete_down" type="TextureButton" parent="." groups=["delete"]]
 margin_left = 841.0
 margin_top = 247.0
 margin_right = 941.0
@@ -200,7 +182,7 @@ margin_bottom = 302.0
 texture_normal = ExtResource( 4 )
 expand = true
 
-[node name="delete_left" type="TextureButton" parent="."]
+[node name="delete_left" type="TextureButton" parent="." groups=["delete"]]
 margin_left = 841.0
 margin_top = 311.0
 margin_right = 941.0
@@ -208,7 +190,7 @@ margin_bottom = 366.0
 texture_normal = ExtResource( 4 )
 expand = true
 
-[node name="delete_right" type="TextureButton" parent="."]
+[node name="delete_right" type="TextureButton" parent="." groups=["delete"]]
 margin_left = 841.0
 margin_top = 367.0
 margin_right = 941.0
@@ -219,16 +201,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="container/up_button" to="." method="_on_up_button_pressed"]
-[connection signal="pressed" from="container/down_button" to="." method="_on_down_button_pressed"]
-[connection signal="pressed" from="container/left_button" to="." method="_on_left_button_pressed"]
-[connection signal="pressed" from="container/right_button" to="." method="_on_right_button_pressed"]
-[connection signal="pressed" from="reset_button" to="." method="_on_reset_button_pressed"]
-[connection signal="pressed" from="reset_up" to="." method="_on_reset_up_pressed"]
-[connection signal="pressed" from="reset_down" to="." method="_on_reset_down_pressed"]
-[connection signal="pressed" from="reset_left" to="." method="_on_reset_left_pressed"]
-[connection signal="pressed" from="reset_right" to="." method="_on_reset_right_pressed"]
-[connection signal="pressed" from="delete_up" to="." method="_on_delete_up_pressed"]
-[connection signal="pressed" from="delete_down" to="." method="_on_delete_down_pressed"]
-[connection signal="pressed" from="delete_left" to="." method="_on_delete_left_pressed"]
-[connection signal="pressed" from="delete_right" to="." method="_on_delete_right_pressed"]
+[node name="panel" type="Panel" parent="."]
+self_modulate = Color( 1, 1, 1, 0.690196 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="label" type="Label" parent="panel"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -198.5
+margin_top = -31.5
+margin_right = 198.5
+margin_bottom = 31.5
+custom_fonts/font = SubResource( 2 )
+text = "PRESS ANY KEY"
+
+[connection signal="pressed" from="reset_all_button" to="." method="_on_reset_all_button_pressed"]

@@ -55,7 +55,7 @@ func panel_visibility():
 	else:
 		$panel.hide()
 			
-# input remapping
+# input remapping system
 func _input(event):
 	if show_panel and event is InputEventKey: 
 		show_panel = false
@@ -113,10 +113,6 @@ func reset_buttons_pressed():
 	for node in get_tree().get_nodes_in_group("reset"):
 		if node.pressed == true:
 			g.game["keys"][node.name.replace("reset_", "")] = default_keys[node.name.replace("reset_", "")]
-			for key in get_tree().get_nodes_in_group("key_remap"):
-				if OS.find_scancode_from_string(key.text) in g.game["keys"].values():
-					key.text = not_assigned
-					g.game["keys"][key.name] = default_keys[key.name]
 			
 func delete_buttons_pressed():
 	for node in get_tree().get_nodes_in_group("delete"):
